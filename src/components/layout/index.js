@@ -1,7 +1,7 @@
 import './index.scss'
 import Sider from './sider'
 import Header from './header'
-import { useState} from 'react';
+import { useState } from 'react';
 import { Outlet, useLocation, useRoutes, Navigate } from 'react-router-dom'
 
 export default function Layout() {

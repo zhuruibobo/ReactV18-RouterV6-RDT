@@ -1,5 +1,6 @@
 import './index.scss'
 
+import { useState } from 'react'
 import { Button, Form, Input, Checkbox } from 'antd'
 import {
   UserOutlined,
@@ -7,20 +8,31 @@ import {
 } from '@ant-design/icons'
 
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { doLogin } from '../../store/features/userSlice'
+import userApi from '@/api/user.js'
 
 export default function Login() {
   const [form] = Form.useForm()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
   function onSubmit() {
     form.validateFields().then(res => {
+      setLoading(prevLoading => {
+        console.log('prevLoading', prevLoading)
+        return !prevLoading
+      })
       console.log(res)
       //模拟登录
-      setTimeout(() => {
-        //存储登录信息(token + redux)
-        //跳转页面useNavigate
-        //TODO
+      userApi.doLogin(res.userName, res.password).then(res => {
+        dispatch(doLogin(res.userName, res.accessList))
         navigate('/dashboard')
-      }, 200)
+      }).finally(() => {
+        setLoading(prevLoading => {
+          return !prevLoading
+        })
+      })
     })
   }
   return (
@@ -53,7 +65,7 @@ export default function Login() {
             </a>
           </Form.Item>
           <Form.Item>
-            <Button type="primary" className="loginBtn" onClick={onSubmit}>登录</Button>
+            <Button type="primary" className="loginBtn" loading={loading} onClick={onSubmit}>登录</Button>
           </Form.Item>
         </Form>
       </div>
