@@ -9,7 +9,8 @@ import {
 
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { doLogin } from '../../store/features/userSlice'
+// import { doLogin } from '../../store/features/userSlice'
+import { doLogin } from '@/store/features/userSlice'
 import userApi from '@/api/user.js'
 
 export default function Login() {
@@ -19,29 +20,43 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   function onSubmit() {
     form.validateFields().then(res => {
+      //接受一个函数，函数参数为上一次的值
       setLoading(prevLoading => {
         console.log('prevLoading', prevLoading)
         return !prevLoading
       })
-      console.log(res)
+      const { userName, password } = res
       //模拟登录
-      userApi.doLogin(res.userName, res.password).then(res => {
-        dispatch(doLogin(res.userName, res.accessList))
-        navigate('/dashboard')
-      }).finally(() => {
-        setLoading(prevLoading => {
-          return !prevLoading
+      // userApi.doLogin(res.userName, res.password).then(res => {
+      //   dispatch(doLogin(res.userName, res.accessList))
+      //   navigate('/dashboard')
+      // }).finally(() => {
+      //   setLoading(prevLoading => {
+      //     return !prevLoading
+      //   })
+      // })
+      dispatch(doLogin({ userName, password }))
+        //unwrap()使用方法见https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
+        .unwrap()
+        .then(fulfilled => {
+          console.log(fulfilled)
+          navigate('/dashboard')
         })
-      })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     })
   }
   return (
     <div className='login-layout'>
       <div className="login-wrapper">
         <h4 className="login-title">
-          红绳之恋后台管理系统
+          CherryZ's React Demo
         </h4>
-        <Form name="login-form" size="large" autoComplete="off" form={form} layout="vertical" initialValues={{remember: true}}>
+        <Form name="login-form" size="large" autoComplete="off" form={form} layout="vertical" initialValues={{userName: 'Cherryz', password: '123456', remember: true}}>
           <Form.Item
             name="userName"
             rules={[{ required: true, message: '请输入用户名'}]}

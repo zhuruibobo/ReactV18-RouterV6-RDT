@@ -10,7 +10,7 @@ import Layout from '@/components/layout'
 import Dashboard from '@/views/dashboard';
 
 import { Provider } from 'react-redux';
-import { store } from './store/store.js';
+import { store } from './store';
 
 import '@/styles/index.scss'
 
