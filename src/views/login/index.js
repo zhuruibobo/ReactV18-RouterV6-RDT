@@ -39,7 +39,7 @@ export default function Login() {
         .unwrap()
         .then(fulfilled => {
           console.log(fulfilled)
-          navigate('/dashboard')
+          navigate('/dashboard', { replace: true })
         })
         .catch(error => {
           console.log(error)

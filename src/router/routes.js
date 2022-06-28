@@ -59,11 +59,13 @@ const onRouteBefore = ({ pathname, meta }) => {
   if (meta.title !== undefined) {
     document.title = meta.title
   }
+  const token = localStorage.getItem('token')
   console.log('meta', meta)
+  if (pathname == '/login' && token !== null) {
+    return '/dashboard'
+  }
   if (!meta.noLogin) {
     console.log('needLogin')
-    const token = localStorage.getItem('token')
-    console.log('token', token)
     if(token !== null) {
       const { accessId } = meta
       const message = `${pathname}, ${meta.title || ''}`
