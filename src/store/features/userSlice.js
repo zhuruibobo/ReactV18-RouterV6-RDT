@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userApi from '@/api/user.js'
 
 const initialState = {
+  token: localStorage.getItem('token') || '',
   userName: '',
   accessList: []
 }
@@ -36,15 +37,18 @@ export const userSlice = createSlice({
         state[key] = initialStateCopy[key]
       })
     },
-    setUserName: (state, action) => {
-      state.userName = action.payload
+    setUserInfo: (state, action) => {
+      console.log('action', action.payload)
+      state.userName = action.payload.userName
+      state.accessList = action.payload.accessList
     }
   },
   extraReducers(builder) {
     builder.addCase(doLogin.fulfilled, (state, action) => {
-      const { userName, accessList } = action.payload
+      const { userName, accessList, token } = action.payload
       state.userName = userName
       state.accessList = accessList
+      localStorage.setItem('token', token)
     })//若state无需根据reject修改可以不加rejected情况
     // .addCase(doLogin.rejected, (state, action) => {
     //   console.log('rejected', action)
@@ -52,6 +56,6 @@ export const userSlice = createSlice({
   }
 })
 
-export const { logOut, setUserName } = userSlice.actions
+export const { logOut, setUserInfo } = userSlice.actions
 
 export default userSlice.reducer

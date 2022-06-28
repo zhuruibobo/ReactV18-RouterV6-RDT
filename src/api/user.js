@@ -2,8 +2,9 @@ function doLogin(userName, password) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({
+        token: 'token',
         userName: userName,
-        accessList: [0]
+        accessList: [1000]
       })
     }, 1500)
     // setTimeout(() => {
@@ -15,6 +16,17 @@ function doLogin(userName, password) {
   })
 }
 
+function getUserInfo() {
+  //真实情况为axios默认获取token配置config.headers[xxx] = token
+  return new Promise(resolve => {
+    resolve({
+      userName: 'CherryZ',
+      accessList: [1000]
+    })
+  })
+}
+
 export default {
-  doLogin
+  doLogin,
+  getUserInfo
 }

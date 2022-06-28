@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 // import { doLogin } from '../../store/features/userSlice'
 import { doLogin } from '@/store/features/userSlice'
-import userApi from '@/api/user.js'
 
 export default function Login() {
   const [form] = Form.useForm()

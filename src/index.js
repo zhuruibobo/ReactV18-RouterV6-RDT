@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { HashRouter, Routes, Route, Navigate} from 'react-router-dom';
-
-import Login from '@/views/login'
-import Layout from '@/components/layout'
-import Dashboard from '@/views/dashboard';
+import { HashRouter } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import { store } from './store';
@@ -19,14 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace/>}></Route>
-        <Route path="/" element={<Layout/>}>
-          <Route index path="dashboard" element={<Dashboard/>}></Route>
-        </Route>
-        <Route path="login" element={<Login/>}></Route>
-        <Route path="*" element={<Navigate to="/login" replace/>}></Route>
-      </Routes>
+      <App></App>
     </HashRouter>
   </Provider>
 );
