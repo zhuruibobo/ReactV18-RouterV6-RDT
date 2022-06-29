@@ -1,4 +1,4 @@
-import { HomeOutlined } from '@ant-design/icons'
+import { HomeOutlined, BarsOutlined } from '@ant-design/icons'
 import userApi from '@/api/user.js'
 
 import Layout from '@/components/layout'
@@ -23,6 +23,22 @@ const routes = [
           icon: <HomeOutlined />,
           accessId: 1000
         }
+      },
+      {
+        path: 'errorPage',
+        meta: {
+          title: '错误页',
+          icon: <BarsOutlined />
+        },
+        children: [
+          {
+            path: '403',
+            component: () => import(/* webpackChunkName: "errorPage" */ '@/views/errorPage/page403'),
+            meta: {
+              title: '403'
+            }
+          }
+        ]
       }
     ]
   },
@@ -60,12 +76,10 @@ const onRouteBefore = ({ pathname, meta }) => {
     document.title = meta.title
   }
   const token = localStorage.getItem('token')
-  console.log('meta', meta)
   if (pathname == '/login' && token !== null) {
     return '/dashboard'
   }
   if (!meta.noLogin) {
-    console.log('needLogin')
     if(token !== null) {
       const { accessId } = meta
       const message = `${pathname}, ${meta.title || ''}`
@@ -84,13 +98,15 @@ const onRouteBefore = ({ pathname, meta }) => {
         })
       }
     } else {
-      console.log('token == null')
       return '/login'
     }
   }
 }
 
 function getIsCanAccess (accessId) {
+  if (!accessId) {
+    return true
+  }
   const storeTree = store.getState()
   const { user: { accessList } } = storeTree
   return accessList.indexOf(accessId) !== -1
@@ -99,11 +115,11 @@ function getIsCanAccess (accessId) {
 function hasUserInfo () {
   const storeTree = store.getState()
   const { user: { accessList } } = storeTree
-  console.log('accessList', accessList)
   return accessList.length > 0
 }
 
 export {
   routes,
-  onRouteBefore
+  onRouteBefore,
+  getIsCanAccess
 }

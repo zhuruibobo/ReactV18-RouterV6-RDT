@@ -21,7 +21,6 @@ export default function Login() {
     form.validateFields().then(res => {
       //接受一个函数，函数参数为上一次的值
       setLoading(prevLoading => {
-        console.log('prevLoading', prevLoading)
         return !prevLoading
       })
       const { userName, password } = res

@@ -38,7 +38,6 @@ export const userSlice = createSlice({
       })
     },
     setUserInfo: (state, action) => {
-      console.log('action', action.payload)
       state.userName = action.payload.userName
       state.accessList = action.payload.accessList
     }
